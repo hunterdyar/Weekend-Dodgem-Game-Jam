@@ -1,0 +1,3 @@
+[submodule "Packages/Unity-Transition-Effects"]
+	path = Packages/Unity-Transition-Effects
+	url = https://github.com/hunterdyar/Unity-Transition-Effects.git

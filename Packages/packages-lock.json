@@ -1,13 +1,12 @@
 {
   "dependencies": {
     "com.hdyar.transitioneffects": {
-      "version": "https://github.com/hunterdyar/Unity-Transition-Effects.git",
+      "version": "file:Unity-Transition-Effects",
       "depth": 0,
-      "source": "git",
+      "source": "embedded",
       "dependencies": {
         "com.unity.render-pipelines.universal": "12.0.0"
-      },
-      "hash": "90286aa036bb9b2fd885c297119196f30436b08a"
+      }
     },
     "com.unity.2d.animation": {
       "version": "9.0.4",

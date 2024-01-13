@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace DefaultNamespace
 {
@@ -51,6 +52,11 @@ namespace DefaultNamespace
 				return;
 			}
 			_gameplaySpeed += Time.deltaTime * speedIncreaseDeltaModifier;
+		}
+
+		public void FadeEnded()
+		{
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
 	}
 }
