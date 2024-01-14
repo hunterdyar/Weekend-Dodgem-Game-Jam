@@ -65,6 +65,5 @@ public class FadeManager : MonoBehaviour
 	    
 	    rf.SetCenter(TransitionEffectUtility.WorldSpaceToUV(cam, fadeTarget.position));
 	    yield return StartCoroutine(Transition.TransitionOutToColor(TransitionType.CircleWipe, 0, fadeTime, Color.black));
-	    Manager.FadeEnded();
     }
 }

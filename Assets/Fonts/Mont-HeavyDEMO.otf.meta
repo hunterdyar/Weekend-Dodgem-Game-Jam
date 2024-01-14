@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 231c6073bdd0ce94bb00867166f2f0a5
+guid: 7b7afbabc5e6da841bd1171acd577283
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Ice Pixel7
+  - Mont
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

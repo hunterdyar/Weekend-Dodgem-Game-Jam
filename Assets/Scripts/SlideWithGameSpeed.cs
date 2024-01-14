@@ -29,6 +29,6 @@ public class SlideWithGameSpeed : MonoBehaviour
 
     void Update()
     {
-        transform.Translate(Vector2.down * (Manager.GameplaySpeed * Time.deltaTime * speedModifier * -flipDirection.ToSign()));
+        transform.Translate(Vector2.down * (Manager.GameplaySpeed * Time.deltaTime * speedModifier * -flipDirection.ToSign()),Space.World);
     }
 }

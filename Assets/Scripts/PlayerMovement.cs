@@ -28,6 +28,8 @@ namespace DefaultNamespace
 		[Header("Death Settings")] public GameObject DeathNugget;
 		public int disectionCount;
 		public float explosionForce;
+
+		
 		private void Awake()
 		{
 			firstJumpTaken = false;
@@ -137,7 +139,7 @@ if (Input.GetKeyDown(KeyCode.Y))
 			GetComponentInChildren<Collider2D>().enabled = false;
 			GetComponentInChildren<SpriteRenderer>().enabled = false;
 			ExplodeParticles();
-			Manager.PlayerDied();
+			Manager.PlayerDied(this);
 		}
 
 		private void ExplodeParticles()

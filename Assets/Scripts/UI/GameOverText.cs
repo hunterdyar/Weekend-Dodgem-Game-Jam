@@ -86,6 +86,7 @@ public class GameOverText : MonoBehaviour
             randIndex = Random.Range(0, shouts.Length);
         }
 
+        _lastUsedShoutIndex = randIndex;
         return shouts[randIndex];
     }
 }

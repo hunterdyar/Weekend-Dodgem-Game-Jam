@@ -98,7 +98,7 @@ MonoBehaviour:
     FilterMode: 1
     Active: 1
     TransitionType: 3
-    Transition: 0
+    Transition: 0.09581932
     Color: {r: 0, g: 0, b: 0, a: 1}
     Center: {x: 0.5, y: 0.8502223}
     Image: {fileID: 0}
