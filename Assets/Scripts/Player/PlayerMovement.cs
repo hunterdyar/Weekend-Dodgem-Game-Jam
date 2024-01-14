@@ -12,35 +12,33 @@ namespace DefaultNamespace
 		public GameplayManager Manager;
 		public Rigidbody2D Rigidbody => _rb;
 		private Rigidbody2D _rb;
-		private FixedJoint2D _joint;
-
+		private PlayerVisuals _pv;
+		
 		private Vector2 _aim;
 		public float jumpSpeed;
 
-		//todo: replace with gameplaymanager state check
-		public bool firstJumpTaken = false;
+		public PlayerState PlayerState => _playerState;
+		private PlayerState _playerState;
+
 		public bool Connected => _connectedJoint != null;
 		private Rigidbody2D _connectedJoint;
 		private Vector2 _previousJointPosition;
 
 		private Vector2 _prevVel;
-		private bool movementActive = true;
-		[Header("Death Settings")] public GameObject DeathNugget;
-		public int disectionCount;
-		public float explosionForce;
+		
 
 		
 		private void Awake()
 		{
-			firstJumpTaken = false;
 			_rb = GetComponent<Rigidbody2D>();
+			_pv = GetComponent<PlayerVisuals>();
 			_aim = Vector2.right;
-			movementActive = true;
+			_playerState = PlayerState.Inactive;
 		}
 
 		private void FixedUpdate()
 		{
-			if (!movementActive)
+			if (PlayerState == PlayerState.Dead)
 			{
 				return;
 			}
@@ -58,7 +56,7 @@ namespace DefaultNamespace
 
 		private void Update()
 		{
-			if (!movementActive)
+			if (_playerState == PlayerState.Dead)
 			{
 				return;
 			}
@@ -73,30 +71,26 @@ if (Input.GetKeyDown(KeyCode.Y))
 
 		public void Jump()
 		{
-			if (!movementActive)
+			if (_playerState == PlayerState.Dead)
 			{
 				return;
 			}
 
-			if (!firstJumpTaken)
+			if (_playerState == PlayerState.Inactive)
 			{
-				//start the game.
+				//start the game, then jump (below)
 				Manager.ChangeGameState(GameState.Gameplay);
 			}
-			
-			if (!Connected && firstJumpTaken)
+
+			if (_playerState == PlayerState.Flying || _playerState == PlayerState.Dead)
 			{
 				return;
 			}
 
-			firstJumpTaken = true;
-			ReleaseJoint();
-			_rb.velocity = _aim.normalized*jumpSpeed;
-		}
-
-		private void ReleaseJoint()
-		{ 
 			_connectedJoint = null;
+			_rb.velocity = _aim.normalized*jumpSpeed;
+			_playerState = PlayerState.Flying;
+
 		}
 
 		private void ConnectJoint(Rigidbody2D rb)
@@ -108,6 +102,7 @@ if (Input.GetKeyDown(KeyCode.Y))
 			}
 			_connectedJoint = rb;
 			_previousJointPosition = rb.position;
+			_playerState = PlayerState.WallCling;
 		}
 		private void OnCollisionEnter2D(Collision2D other)
 		{
@@ -118,6 +113,10 @@ if (Input.GetKeyDown(KeyCode.Y))
 			if (rb != null)
 			{
 				ConnectJoint(other.rigidbody);
+				if (Manager.screenshake)
+				{
+					CameraShake.ShakeOnce(_aim);
+				}
 			}
 		}
 
@@ -134,35 +133,13 @@ if (Input.GetKeyDown(KeyCode.Y))
 		{
 			_rb.velocity = Vector2.zero;
 			//Explode
-			movementActive = false;
+			_playerState = PlayerState.Dead;
 			_rb.isKinematic = true;
 			GetComponentInChildren<Collider2D>().enabled = false;
-			GetComponentInChildren<SpriteRenderer>().enabled = false;
-			ExplodeParticles();
+			_pv.Explode();
 			Manager.PlayerDied(this);
 		}
 
-		private void ExplodeParticles()
-		{
-			List<Rigidbody2D> nuggets = new List<Rigidbody2D>();
-			Vector3 scale = transform.localScale / disectionCount;
-			for (int i = 0; i < disectionCount; i++)
-			{
-				for (int j = 0; j < disectionCount; j++)
-				{
-					var n = Instantiate(DeathNugget);
-					nuggets.Add(n.GetComponent<Rigidbody2D>());
-					Vector3 offset = new Vector2(scale.x * i + scale.x/2 - transform.localScale.x/2, scale.y * j+scale.y/2-transform.localScale.y/2);
-					n.transform.localScale = scale;
-					n.transform.position = transform.position + offset;
-				}
-			}
-
-			foreach (var n in nuggets)
-			{
-				n.velocity = _rb.velocity;
-				n.AddForce(Random.insideUnitCircle*Random.insideUnitCircle * explosionForce,ForceMode2D.Impulse);
-			}
-		}
+		
 	}
 }

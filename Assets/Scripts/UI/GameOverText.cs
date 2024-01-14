@@ -2,21 +2,30 @@ using System.Collections;
 using DefaultNamespace;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GameOverText : MonoBehaviour
 {
+    public GameplayManager Manager;
     private TMP_Text _text;
     public AnimationCurve InSwing;
     public AnimationCurve OutSwing;
     public float offscreenPos;
     public float moveTime;
     public float stillTime;
-    public string[] shouts;
+    [FormerlySerializedAs("shouts")] public string[] badShouts;
+    public string[] goodShouts;
+    public string[] highscoreShouts;
+
+    public float goodTimeThreshold = 20;
     private int _lastUsedShoutIndex;
+    private static readonly string _lastUsedShoutPlayerPrefKey = "LastUsedShout";
     private void Awake()
     {
         _text = GetComponent<TMP_Text>();
         _text.enabled = false;
+        _lastUsedShoutIndex = PlayerPrefs.GetInt(_lastUsedShoutPlayerPrefKey, -1);
+        goodTimeThreshold = UnityEngine.Random.Range(-3, 3) + goodTimeThreshold;//gotta keep em guessing, ya know?
     }
 
     void OnEnable()
@@ -72,6 +81,15 @@ public class GameOverText : MonoBehaviour
 
     private string GetShout()
     {
+        var shouts = badShouts;
+        if (Manager.IsHighscore)
+        {
+            shouts = highscoreShouts;
+        }else if (Manager.SurvivalTime > goodTimeThreshold)
+        {
+            shouts = goodShouts;
+        }
+        
         if (shouts.Length == 0)
         {
             return "oof!";
@@ -80,6 +98,8 @@ public class GameOverText : MonoBehaviour
             return shouts[0];
         }
 
+        
+
         int randIndex = _lastUsedShoutIndex;
         while (randIndex == _lastUsedShoutIndex)
         {
@@ -87,6 +107,7 @@ public class GameOverText : MonoBehaviour
         }
 
         _lastUsedShoutIndex = randIndex;
+        PlayerPrefs.SetInt(_lastUsedShoutPlayerPrefKey,_lastUsedShoutIndex);
         return shouts[randIndex];
     }
 }

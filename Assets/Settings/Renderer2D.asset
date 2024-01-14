@@ -17,7 +17,7 @@ MonoBehaviour:
     FilterMode: 1
     Active: 1
     Threshold: 0.002
-    Color: {r: 0.18066806, g: 0.033641864, b: 0.26415092, a: 1}
+    Color: {r: 0, g: 0, b: 0, a: 1}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98,7 +98,7 @@ MonoBehaviour:
     FilterMode: 1
     Active: 1
     TransitionType: 3
-    Transition: 0.09581932
+    Transition: 0.6861735
     Color: {r: 0, g: 0, b: 0, a: 1}
-    Center: {x: 0.5, y: 0.8502223}
+    Center: {x: 0.5, y: 0.7938948}
     Image: {fileID: 0}

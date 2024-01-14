@@ -7,11 +7,13 @@ using UnityEngine.Serialization;
 
 public class InteractableManager : MonoBehaviour
 {
-    public GameObject[] InteractablePrefabs;
     public GameplayManager Manager;
     [SerializeField] private BoxCollider2D _spawnBox;
     private float _timer;
+
+    public WeightedSelection<GameObject> InteractablePrefabs;
     
+    public float totalGameTimeForWeightsCurve;
     void Update()
     {
         if (Manager.GameState == GameState.Gameplay)
@@ -22,13 +24,18 @@ public class InteractableManager : MonoBehaviour
                 ResetTimer();
                 SpawnItem();
             }
+
+            if (Manager.SurvivalTime < totalGameTimeForWeightsCurve && totalGameTimeForWeightsCurve != 0)
+            {
+                InteractablePrefabs.SetAllItemWeightsByCurve(Manager.SurvivalTime / totalGameTimeForWeightsCurve);
+            }
         }
     }
 
     private void SpawnItem()
     {
         Vector3 position = GetSpawnPoint();
-        var prefab = InteractablePrefabs[Random.Range(0, InteractablePrefabs.Length)];
+        var prefab = InteractablePrefabs.GetWeightedRandomItem();
         Instantiate(prefab, position, prefab.transform.rotation);
     }
 

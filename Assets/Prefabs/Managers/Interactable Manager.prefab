@@ -45,11 +45,72 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91b1e78f7edcfc345ace2571896cfa27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InteractablePrefabs:
-  - {fileID: 4663675700315950381, guid: 1835e4b30c7daf64bb98b60d5b7bce66, type: 3}
-  - {fileID: 4268372378691724038, guid: f2d387dd10bac6f47bed17766c51a22b, type: 3}
   Manager: {fileID: 11400000, guid: 8a68adc17f0042d41afff752bcf0befe, type: 2}
   _spawnBox: {fileID: 6237492302225976701}
+  InteractablePrefabs:
+    Items:
+    - item: {fileID: 4663675700315950381, guid: 1835e4b30c7daf64bb98b60d5b7bce66, type: 3}
+      weight: 1
+      Curve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0.000000040978193
+          value: 1.0062591
+          inSlope: -0.058267005
+          outSlope: -0.058267005
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.30985913
+        - serializedVersion: 3
+          time: 0.51217246
+          value: 0.7366523
+          inSlope: -1.1348269
+          outSlope: -1.1348269
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 1.0048828
+          value: 0.2250061
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+    - item: {fileID: 4268372378691724038, guid: f2d387dd10bac6f47bed17766c51a22b, type: 3}
+      weight: 1
+      Curve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0.07499695
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 2
+          outSlope: 2
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+  totalGameTimeForWeightsCurve: 30
 --- !u!1 &8382150707075093889
 GameObject:
   m_ObjectHideFlags: 0

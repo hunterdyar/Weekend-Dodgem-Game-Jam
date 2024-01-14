@@ -7,27 +7,42 @@ using UnityEngine;
 
 public class UITimeText : MonoBehaviour
 {
-    private TMP_Text _text;
-
+    public TMP_Text _currentTimeText;
+    public TMP_Text _bestTimeText;
+    
     [SerializeField] private GameplayManager Manager;
-    private TimeSpan _span;
+    private static TimeSpan _span;
     private void Awake()
     {
-        _text = GetComponent<TMP_Text>();
         _span = new TimeSpan(0);
     }
 
-    // Update is called once per frame
+    private void Start()
+    {
+        SetText(_bestTimeText, Manager.GetHighscore());
+    }
+
     void Update()
     {
-        _text.enabled = false;
+        _currentTimeText.enabled = false;
+        
+        _currentTimeText.enabled = true;
+        float time = Manager.SurvivalTime;
+        SetText(_currentTimeText,time);
+        if (Manager.IsHighscore)
+        {
+            SetText(_bestTimeText,time);
+        }
+
         if (Manager.GameState == GameState.GameOver)
         {
-            _text.enabled = true;
-            float time = Manager.SurvivalTime;
-            _span = TimeSpan.FromSeconds(time);
-            _text.text = $"{_span.Minutes}:{_span.Seconds}:{_span.Milliseconds}";
+            //SetText(_bestTimeText, time);
         }
-        
+    }
+
+    public static void SetText(TMP_Text text, float seconds)
+    {
+        _span = TimeSpan.FromSeconds(seconds);
+        text.text = $"{_span.Minutes}:{_span.Seconds}:{_span.Milliseconds}";
     }
 }

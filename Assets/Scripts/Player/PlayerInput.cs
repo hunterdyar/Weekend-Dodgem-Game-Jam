@@ -1,4 +1,5 @@
 ﻿using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace DefaultNamespace
@@ -18,6 +19,11 @@ namespace DefaultNamespace
 			if (Input.GetButton("Jump"))
 			{
 				_movement.Jump();
+			}
+
+			if (Input.GetKeyDown(KeyCode.S))
+			{
+				_movement.Manager.ToggleScreenShake();
 			}
 		}
 	}

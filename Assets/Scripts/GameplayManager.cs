@@ -8,6 +8,7 @@ namespace DefaultNamespace
 	[CreateAssetMenu(fileName = "Gameplay Manager", menuName = "Dodgem/Gameplay", order = 0)]
 	public class GameplayManager : ScriptableObject
 	{
+		public bool screenshake = true;
 		private static readonly string HighScoreKey = "BestSurvivalTime";
 		public float GameplaySpeed => _gameplaySpeed;
 		[SerializeField] private float _gameplaySpeed;
@@ -22,6 +23,8 @@ namespace DefaultNamespace
 		private float _survivalTime;
 		public bool IsHighscore => _isHighScore;
 		private bool _isHighScore = false;
+
+		private float _lastHighScore = Mathf.Infinity;
 		public void ChangeGameState(GameState newGameState)
 		{
 			if (_gameState == newGameState)
@@ -29,27 +32,44 @@ namespace DefaultNamespace
 				Debug.LogWarning("Change state to same state. "+newGameState);
 				return;
 			}
-
+			
 			_gameState = newGameState;
 			OnGameStateChange.Invoke(_gameState);
 		}
 
+		public float GetHighscore()
+		{
+			if (_isHighScore)
+			{
+				return _survivalTime;
+			}
+
+			return PlayerPrefs.GetFloat(HighScoreKey);
+		}
 		public void Init()
 		{
+			screenshake = PlayerPrefs.GetInt("Screenshake", 1) > 0;
 			_gameState = GameState.Init;
 			_gameplaySpeed = StartingSpeed;
 			Physics2D.gravity = Vector2.zero;
 			_survivalTime = 0;
 			_isHighScore = false;
+			_lastHighScore = GetHighscore();
+		}
+
+		public void ToggleScreenShake()
+		{
+			screenshake = !screenshake;
+			Debug.Log($"Toggle Screenshake: {screenshake}");
+			PlayerPrefs.SetInt("Screenshake", screenshake ? 1:0);
 		}
 
 		public void PlayerDied(PlayerMovement player)
 		{
+			ScoreHighScore();
 			Physics2D.gravity = new Vector2(0, -GameplaySpeed);
 			_gameplaySpeed = 0;
 			ChangeGameState(GameState.GameOver);
-			Debug.Log("LOSE");
-			ScoreHighScore();
 			player.StartCoroutine(WaitThenRestart());
 		}
 
@@ -71,6 +91,11 @@ namespace DefaultNamespace
 				return;
 			}
 
+			if (_survivalTime > _lastHighScore)
+			{
+				_isHighScore = true;
+			}
+			
 			_survivalTime += Time.deltaTime;
 			_gameplaySpeed += Time.deltaTime * speedIncreaseDeltaModifier;
 		}
