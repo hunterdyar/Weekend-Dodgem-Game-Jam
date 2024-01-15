@@ -30,7 +30,11 @@ namespace DefaultNamespace
 			{
 				_movement.Manager.ToggleScreenShake();
 			}
-			if(Input.GetKeyD)
+
+			if (Input.GetKeyDown(KeyCode.Q))
+			{
+				PlayerPrefs.DeleteAll();
+			}
 		}
 	}
 }
