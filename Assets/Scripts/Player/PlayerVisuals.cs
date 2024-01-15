@@ -42,6 +42,8 @@ namespace DefaultNamespace
 			}
 			_anim.SetBool(WallClingAnimProp,_pm.PlayerState == PlayerState.WallCling);
 			_anim.SetBool("Idle", _pm.PlayerState == PlayerState.Inactive);
+			_anim.SetBool("Trapped", _pm.PlayerState == PlayerState.Trapped);
+
 			
 			//update aim
 			aim.transform.localPosition = _pm.Aim * radius;
