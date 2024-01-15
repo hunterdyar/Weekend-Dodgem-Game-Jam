@@ -10117,19 +10117,27 @@ MonoBehaviour:
   stillTime: 0.15
   badShouts:
   - OUCH!
-  - BUMMER
-  - OOF
-  - GAME OVER
-  - LOSER
-  - TRY AGAIN
-  - UNFORTUNATE
+  - Bummer
+  - OOF.mp3
+  - Game Over
+  - Loser!
+  - Try Again
+  - Unfortunate
   - SLAMMED
   - SLAP!
   - PASS THE STICKS
-  - DO BETTER
+  - Do Better
   - LAME
   - JUST GO HOME
   - YOU TRIED
+  - Tragic
+  - Unlucky
+  - Take A Nap
+  - Horrible
+  - cat-astrophic
+  - That Hurt
+  - Don't Give Up
+  - Maybe Next Time
   goodShouts:
   - Nice Job
   - Incredible
@@ -10138,6 +10146,14 @@ MonoBehaviour:
   - Wow!
   - Pretty Okay
   - Good Job
+  - SUPERB
+  - MEOW!
+  - Tasty!
+  - You Did Good
+  - You Did Great
+  - Phenomenal!
+  - Delicious
+  - Scrumptious
   highscoreShouts:
   - New Best!
   - New Record!
