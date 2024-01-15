@@ -121,7 +121,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.64
 --- !u!114 &2772880572016797403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,5 +150,6 @@ MonoBehaviour:
   Manager: {fileID: 11400000, guid: 8a68adc17f0042d41afff752bcf0befe, type: 2}
   flipDirection: 1
   speedModifier: 1
-  randomizeModifer: 0
-  range: {x: 0, y: 0}
+  randomizeSpeedModifer: 0
+  randomRangeMin: 0
+  randomRangeMax: 0

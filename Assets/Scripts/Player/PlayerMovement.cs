@@ -13,8 +13,10 @@ namespace DefaultNamespace
 		public Rigidbody2D Rigidbody => _rb;
 		private Rigidbody2D _rb;
 		private PlayerVisuals _pv;
-		
-		private Vector2 _aim;
+
+		public Vector2 Aim => _aim;
+
+	private Vector2 _aim;
 		public float jumpSpeed;
 
 		public PlayerState PlayerState => _playerState;
@@ -25,11 +27,13 @@ namespace DefaultNamespace
 		private Vector2 _previousJointPosition;
 
 		private Vector2 _prevVel;
-		
 
+		private Trap _currentTrap;
+		private bool _releasedJump;
 		
 		private void Awake()
 		{
+			_releasedJump = true;
 			_rb = GetComponent<Rigidbody2D>();
 			_pv = GetComponent<PlayerVisuals>();
 			_aim = Vector2.right;
@@ -61,6 +65,13 @@ namespace DefaultNamespace
 				return;
 			}
 
+			if (_playerState == PlayerState.Trapped)
+			{
+				//rotate _aim variable.
+				_aim = (_currentTrap.GetRotation()) * ((Vector3)_aim);
+				//rotate the aim indicator/cat.
+			}
+
 #if UNITY_EDITOR
 if (Input.GetKeyDown(KeyCode.Y))
 {
@@ -87,10 +98,21 @@ if (Input.GetKeyDown(KeyCode.Y))
 				return;
 			}
 
+			//you have to let go of hte jump button if you are trapped, but you can hold it if you are touching a wall to jump instantly.
+			//this is super janky but im like an hour from hitting publish
+			if (_playerState == PlayerState.Trapped)
+			{
+				if (!_releasedJump)
+				{
+					return;
+				}
+			}
+
+			_releasedJump = false;
 			_connectedJoint = null;
 			_rb.velocity = _aim.normalized*jumpSpeed;
 			_playerState = PlayerState.Flying;
-
+			_currentTrap = null;
 		}
 
 		private void ConnectJoint(Rigidbody2D rb)
@@ -125,6 +147,12 @@ if (Input.GetKeyDown(KeyCode.Y))
 			var inter = other.GetComponentInParent<Interactable>();
 			if (inter != null)
 			{
+				if (_playerState == PlayerState.Trapped)
+				{
+					//Jump();
+					//released. stuck!
+					_playerState = PlayerState.Flying;
+				}
 				inter.Interact(this);
 			}
 		}
@@ -140,6 +168,21 @@ if (Input.GetKeyDown(KeyCode.Y))
 			Manager.PlayerDied(this);
 		}
 
-		
+
+		public void Trap(Trap trap)
+		{
+			_rb.velocity = Vector2.zero;
+			_playerState = PlayerState.Trapped;
+			_currentTrap = trap;
+			//set state to trapped. 
+			//set initial spin direction.
+			//turn on spin indication arrow
+			//start spinning.
+		}
+
+		public void ReleaseJump()
+		{
+			_releasedJump = true;
+		}
 	}
 }

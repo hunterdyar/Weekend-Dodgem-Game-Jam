@@ -21,10 +21,16 @@ namespace DefaultNamespace
 				_movement.Jump();
 			}
 
+			if (Input.GetButtonUp("Jump"))
+			{
+				_movement.ReleaseJump();
+			}
+
 			if (Input.GetKeyDown(KeyCode.S))
 			{
 				_movement.Manager.ToggleScreenShake();
 			}
+			if(Input.GetKeyD)
 		}
 	}
 }

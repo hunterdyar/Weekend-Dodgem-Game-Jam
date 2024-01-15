@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -19,6 +20,8 @@ namespace DefaultNamespace
 		private static readonly int DirAnimProp = Animator.StringToHash("Dir");
 		private static readonly int WallClingAnimProp = Animator.StringToHash("WallCling");
 
+		[Header("Aim Settings")] public GameObject aim;
+		public float radius;
 		private void Awake()
 		{
 			_pm = GetComponent<PlayerMovement>();
@@ -33,9 +36,32 @@ namespace DefaultNamespace
 		private void Update()
 		{
 			_anim.SetBool(DeadAnimProp,_pm.PlayerState == PlayerState.Dead);
-			_anim.SetFloat(DirAnimProp,_pm.Rigidbody.velocity.normalized.x);
+			if (_pm.PlayerState == PlayerState.Flying)
+			{
+				_anim.SetFloat(DirAnimProp, _pm.Rigidbody.velocity.normalized.x);
+			}
 			_anim.SetBool(WallClingAnimProp,_pm.PlayerState == PlayerState.WallCling);
 			_anim.SetBool("Idle", _pm.PlayerState == PlayerState.Inactive);
+			
+			//update aim
+			aim.transform.localPosition = _pm.Aim * radius;
+			aim.transform.rotation = Quaternion.LookRotation(Vector3.back, _pm.Aim);
+			aim.SetActive(ShowAim());
+		}
+
+		private bool ShowAim()
+		{
+			switch (_pm.PlayerState)
+			{
+				case PlayerState.Trapped:
+				case PlayerState.Inactive:
+					return true;
+				case PlayerState.Dead:
+				case PlayerState.Flying:
+				case PlayerState.WallCling:
+				default:
+						return false;
+			}
 		}
 
 		public void Explode()
